@@ -113,10 +113,10 @@ def index():
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
+  cursor = g.conn.execute("SELECT maj_name FROM major")
   names = []
   for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
+    names.append(result['maj_name'])  # can also be accessed using result[0]
   cursor.close()
 
   #
@@ -166,12 +166,15 @@ def index():
 def another():
   return render_template("another.html")
 
+@app.route('/selects')
+def selects():
+  return render_template("selects.html")
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
   name = request.form['name']
-  g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
+  g.conn.execute('INSERT INTO major(school, maj_name) VALUES (\'CC\', %s)', name)
   return redirect('/')
 
 
