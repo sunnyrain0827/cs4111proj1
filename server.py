@@ -18,6 +18,7 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+from flask_table import Table, Col
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -168,7 +169,11 @@ def another():
 
 @app.route('/selects')
 def selects():
-  return render_template("selects.html")
+  cursor2 = g.conn.execute('SELECT school, maj_name FROM Major')
+  majors = []
+  
+  context = [dict(school = row[0], maj_name=row[1]) for row in cursor2.fetchall()]
+  return render_template("selects.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
