@@ -117,7 +117,7 @@ def index():
   cursor = g.conn.execute("SELECT * FROM studies")
   schools = []
   for result in cursor:
-    unis.append(result['school'])
+    schools.append(result['school'])
   cursor.close()
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
