@@ -25,12 +25,12 @@
 <p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
 </form>
 
-<form name = pids method="POST" action="/piece">
-	<p>See Piece corresponging to ID:>
+<form name = formy  method="POST" action="/piece">
+	<p>See Piece corresponging to ID:</p>
 	<select name = "pids">
-		{%for pid in pids2%}
-			<option value="{{pid}}">{{pid}}</option>
-		{%endfor%}
+		{% for n in pids2 %}
+			<option value="{{n}}">{{n}}</option>
+		{% endfor %}
 	</select>
 
 	<button type="submit">See Piece!</button>
