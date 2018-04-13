@@ -208,6 +208,34 @@ def teammembers():
   context = dict(data = (unis, schools, majors, gpas))
   return render_template("teammembers.html", **context)
 
+@app.route('/winners', methods = ['POST'])
+def winners():
+  date = request.form['winners']
+  if winners == "all":
+    cursor= g.conn.execute("SELECT * FROM winners ORDER BY piece_id")
+  else:
+    cursor = g.conn.execute("SELECT * FROM winners WHERE date = '{0}' ORDER BY piece_id".format(date))
+  pids = []
+  lengths = []
+  reps = []
+  rest = []
+  splits = []
+  dates = []
+  rowers = []
+  grads = []
+  for result in cursor:
+    pids.append(result['piece_id'])
+    lengths.append(result['length'])
+    reps.append(result['rep_num'])
+    rest.append(result['rest'])
+    splits.append(result['split_speed'])
+    dates.append(result['date'])
+    rowers.append(result['row_name'])
+    grads.append(result['year'])
+  cursor.close()
+  context = dict(data = (pids, lengths, reps, rest, splits, dates, rowers, grads))
+  return render_template("winners.html", **context)
+
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
