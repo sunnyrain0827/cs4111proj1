@@ -107,18 +107,11 @@ def index():
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
 
-  # DEBUG: this is debugging code to see what request looks like
-  print request.args
-
-
-  #
-  # example of a database query
-  #
-  cursor = g.conn.execute("SELECT maj_name FROM major")
-  names = []
-  for result in cursor:
-    names.append(result['maj_name'])  # can also be accessed using result[0]
-  cursor.close()
+  cursor2 = g.conn.execute("SELECT piece_id FROM piece")
+  pids2 = []
+  for result in cursor2:
+    pids2.append(result['piece_id'])
+  cursor2.close()
 
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
@@ -146,14 +139,14 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+ #context = dict(data = names)
 
 
   #
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html", **context)
+  return render_template("index.html")
 
 #
 # This is an example of a different path.  You can see it at:
@@ -167,12 +160,21 @@ def index():
 def another():
   return render_template("another.html")
 
-@app.route('/selects')
-def selects():
-  cursor2 = g.conn.execute('SELECT school, maj_name FROM Major')
-  majors = []
-  
-  context = [dict(school = row[0], maj_name=row[1]) for row in cursor2.fetchall()]
+@app.route('/piece', methods = ['POST'])
+def piece():
+  pid = request.form['pids']
+  cursor2 = g.conn.execute('SELECT * FROM piece(piece_id, date, repnum, rest) WHERE piece_ID = %d', pid)
+  pids2 = []
+  dates = []
+  repnums = []
+  rest = []
+  for r in cursor2:
+    pids2.append(result['piece_id'])
+    dates.append(result['date'])
+    repnums.append(result['repnum'])
+    rest.append(result['rest'])
+  cursor2.close()
+  context = dict(data = (pids2, dates, rempnums, rest))
   return render_template("selects.html", **context)
 
 # Example of adding new data to the database
