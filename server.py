@@ -75,7 +75,7 @@ def index():
     rowers.append(result['row_name'])
   cursor.close()
 
-  return render_template("index.html", dates2=dates2, schools=schools rowers=rowers)
+  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers)
 
 @app.route('/another')
 def another():
@@ -154,8 +154,8 @@ def winners():
   return render_template("winners.html", **context)
 
 @app.route('/rowerinfo', methods = ['POST'])
-def winners():
-  rowers = request.form['winners']
+def rowerinfo():
+  rowers = request.form['rowers']
   if rowers == "all":
     cursor= g.conn.execute("SELECT * FROM rower_info ORDER BY row_name")
   else:
@@ -186,8 +186,8 @@ def winners():
     schools.append(result['school'])
     ranks.append(result['rank'])
   cursor.close()
-  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecuit, collegeteams, gpas, majors, schools, ranks))
-  return render_template("rowerifo.html", **context)
+  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecruit, collegeteams, gpas, majors, schools, ranks))
+  return render_template("rowerinfo.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
