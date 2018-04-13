@@ -108,9 +108,9 @@ def index():
   """
 
   cursor2 = g.conn.execute("SELECT * FROM piece")
-  pids2 = []
+  dates2 = []
   for result in cursor2:
-    pids2.append(result['piece_id'])
+    dates2.append(result['date'])
   cursor2.close()
   
 
@@ -152,7 +152,7 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html", pids2=pids2, schools=schools)
+  return render_template("index.html", dates2=dates2, schools=schools)
 
 #
 # This is an example of a different path.  You can see it at:
@@ -168,25 +168,33 @@ def another():
 
 @app.route('/piece', methods = ['POST'])
 def piece():
-  pid = request.form['pids']
-  cursor2 = g.conn.execute("SELECT * FROM piece WHERE piece_id = '{0}'".format(pid))
+  date = request.form['dates']
+  if date == "all":
+    cursor2 = g.conn.execute("SELECT * FROM all_pieces ORDER BY piece_id")
+  else:
+    cursor2 = g.conn.execute("SELECT * FROM all_pieces WHERE date = '{0}' ORDER BY piece_id".format(date))
   pids3 = []
   dates = []
   repnums = []
   rest = []
+  lengths = []
   for result in cursor2:
     pids3.append(result['piece_id'])
     dates.append(result['date'])
     repnums.append(result['rep_num'])
     rest.append(result['rest'])
+    lengths.append(result['length'])
   cursor2.close()
-  context = dict(data = (pids3, dates, repnums, rest))
+  context = dict(data = (pids3, dates, lengths, repnums, rest))
   return render_template("piece.html", **context)
 
 @app.route('/teammembers', methods = ['POST'])
 def teammembers():
   school = request.form['school']
-  cursor = g.conn.execute("SELECT * FROM studies WHERE school = '{0}'".format(school))
+  if school == "all":
+    cursor= g.conn.execute("SELECT * FROM studies ORDER BY uni")
+  else:
+    cursor = g.conn.execute("SELECT * FROM studies WHERE school = '{0}' ORDER BY uni".format(school))
   unis = []
   gpas = []
   majors = []

@@ -13,11 +13,12 @@
   <p><a href="another">Go to the other page</a></p>
 
   <form name = formy  method="POST" action="/piece">
-	<p>See Piece corresponging to ID:</p>
-	<select name = "pids">
-		{% for n in pids2 %}
+	<p>See Piece corresponding to Date:</p>
+	<select name = "dates">
+		{% for n in dates2 %}
 			<option value="{{n}}">{{n}}</option>
 		{% endfor %}
+		<option value="all">All pieces</option>
 	</select>
 
 	<button type="submit">See Piece!</button>
@@ -29,6 +30,7 @@
                 {% for n in schools %}
                         <option value="{{n}}">{{n}}</option>
                 {% endfor %}
+		<option value = "all">All Schools</option>
         </select>
 
         <button type="submit">See Academics!</button>

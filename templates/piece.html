@@ -16,22 +16,32 @@
 
   <table style="width:100%">
     <tr>
+      <th>Piece ID:</th>
       {% for n in data[0] %}
       <th>{{n}}</th>
       {% endfor %}
     </tr>
     <tr>
+      <td>Date:</td>
       {% for n in data[1] %}
       <td>{{n}}</td>
       {% endfor %}
     </tr>
     <tr>
+      <td>Distance:</td>
       {% for n in data[2] %}
       <td>{{n}}</td>
       {% endfor %}
     </tr>
     <tr>
+      <td>Reps:</td>
       {% for n in data[3] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr> 
+      <td>Rest:</td>
+      {% for n in data[4] %}
       <td>{{n}}</td>
       {% endfor %}
     </tr>
