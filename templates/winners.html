@@ -2,10 +2,18 @@
   <style>
     body{
       font-size: 15pt;
-      font-family: arial;
+      font-family: Times;
     }
     th{
       text-align: left;
+      display: block;
+    }
+    td{
+      display: block;
+    }
+    tr{
+      display: block;
+      float: left;
     }
   </style>
 
@@ -14,7 +22,7 @@
   <h1>Winners by Date</h1>
   <div>{{data}}</div>
 
-  <table style="width:100%">
+  <table border="1">
     <tr>
       <th>Piece ID:</th>
       {% for n in data[0] %}
