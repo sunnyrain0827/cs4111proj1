@@ -48,6 +48,18 @@
         <button type="submit">See Wins!</button>
   </form>
 
+  <form name = formy  method="POST" action="/rowerinfo">
+        <p>See General Info About Each Rower:</p>
+        <select name = "rowers">
+                {% for n in rowers %}
+                        <option value="{{n}}">{{n}}</option>
+                {% endfor %}
+                <option value="all">All Rowers</option>
+        </select>
+
+        <button type="submit">Stalk 'em!</button>
+  </form>  
+
 </body>
 
 

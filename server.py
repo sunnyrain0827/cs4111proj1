@@ -61,15 +61,21 @@ def index():
   dates2 = []
   for result in cursor2:
     dates2.append(result['date'])
-  cursor2.close()
-  
+  cursor2.close()  
 
   cursor = g.conn.execute("SELECT DISTINCT school FROM studies")
   schools = []
   for result in cursor:
     schools.append(result['school'])
   cursor.close()
-  return render_template("index.html", dates2=dates2, schools=schools)
+
+  cursor = g.conn.execute("SELECT row_name FROM rower_info")
+  rowers = []
+  for result in cursor:
+    rowers.append(result['row_name'])
+  cursor.close()
+
+  return render_template("index.html", dates2=dates2, schools=schools rowers=rowers)
 
 @app.route('/another')
 def another():
@@ -146,6 +152,42 @@ def winners():
   cursor.close()
   context = dict(data = (pids, lengths, reps, rest, splits, dates, rowers, grads, isrecruit))
   return render_template("winners.html", **context)
+
+@app.route('/rowerinfo', methods = ['POST'])
+def winners():
+  rowers = request.form['winners']
+  if rowers == "all":
+    cursor= g.conn.execute("SELECT * FROM rower_info ORDER BY row_name")
+  else:
+    cursor = g.conn.execute("SELECT * FROM rower_info WHERE row_name = '{0}'".format(rowers))
+  names = []
+  grads = []
+  zips = []
+  unis = []
+  hsteams = []
+  isclub = []
+  isrecruit = []
+  collegeteams = []
+  gpas = []
+  majors = []
+  schools = []
+  ranks = []
+  for result in cursor:
+    names.append(result['row_name'])
+    grads.append(result['year'])
+    zips.append(result['zip_code'])
+    unis.append(result['uni'])
+    hsteams.append(result['team_name'])
+    isclub.append(result['is_club'])
+    isrecruit.append(result['is_recruit'])
+    collegeteams.append(result['class'])
+    gpas.append(result['gpa'])
+    majors.append(result['maj_name'])
+    schools.append(result['school'])
+    ranks.append(result['rank'])
+  cursor.close()
+  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecuit, collegeteams, gpas, majors, schools, ranks))
+  return render_template("rowerifo.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
