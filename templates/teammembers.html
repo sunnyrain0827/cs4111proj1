@@ -4,17 +4,37 @@
       font-size: 15pt;
       font-family: arial;
     }
+    th{
+      text-align: left;
+    }
   </style>
 
 <body>
   <h1>Rower</h1>
   <div>{{data}}</div>
 
-  <div>
-    {% for n in data %}
-    <div>{{n}}</div>
-    {% endfor %}
-  </div>
+  <table style="width:100%">
+    <tr>
+      {% for n in data[0] %}
+      <th>{{n}}</th>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for n in data[1] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for n in data[2] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      {% for n in data[3] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+  </table>
 
 <p><a href="/">Go back to the homepage</a></p>
 

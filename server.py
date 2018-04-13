@@ -114,7 +114,7 @@ def index():
   cursor2.close()
   
 
-  cursor = g.conn.execute("SELECT * FROM studies")
+  cursor = g.conn.execute("SELECT DISTINCT school FROM studies")
   schools = []
   for result in cursor:
     schools.append(result['school'])
@@ -183,10 +183,10 @@ def piece():
   context = dict(data = (pids3, dates, repnums, rest))
   return render_template("piece.html", **context)
 
-@app.route('/teammmembers', methods = ['POST'])
+@app.route('/teammembers', methods = ['POST'])
 def teammembers():
   school = request.form['school']
-  cursor = g.conn.execute("SELECT * FROM studies WHERE uni = '{0}'".format(school))
+  cursor = g.conn.execute("SELECT * FROM studies WHERE school = '{0}'".format(school))
   unis = []
   gpas = []
   majors = []
