@@ -36,6 +36,17 @@
 	<button type="submit">See Piece!</button>
 </form>
 
+<form name = formy  method="POST" action="/teammembers">
+        <p>See Academic Team Data by School:</p>
+        <select name = "school">
+                {% for n in schools %}
+                        <option value="{{n}}">{{n}}</option>
+                {% endfor %}
+        </select>
+
+        <button type="submit">See Academics!</button>
+</form>
+
 </body>
 
 

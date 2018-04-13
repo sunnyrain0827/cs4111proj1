@@ -112,7 +112,13 @@ def index():
   for result in cursor2:
     pids2.append(result['piece_id'])
   cursor2.close()
+  
 
+  cursor = g.conn.execute("SELECT * FROM studies")
+  schools = []
+  for result in cursor:
+    unis.append(result['school'])
+  cursor.close()
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
   # pass data to a template and dynamically generate HTML based on the data
@@ -146,7 +152,7 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html", pids2=pids2)
+  return render_template("index.html", pids2=pids2, schools=schools)
 
 #
 # This is an example of a different path.  You can see it at:
@@ -176,6 +182,23 @@ def piece():
   cursor2.close()
   context = dict(data = (pids3, dates, repnums, rest))
   return render_template("piece.html", **context)
+
+@app.route('/teammmembers', methods = ['POST'])
+def teammembers():
+  school = request.form['school']
+  cursor = g.conn.execute("SELECT * FROM studies WHERE uni = '{0}'".format(school))
+  unis = []
+  gpas = []
+  majors = []
+  schools = []
+  for result in cursor:
+    unis.append(result['uni'])
+    gpas.append(result['gpa'])
+    majors.append(result['maj_name'])
+    schools.append(result['school'])
+  cursor.close()
+  context = dict(data = (unis, schools, majors, gpas))
+  return render_template("teammembers.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
