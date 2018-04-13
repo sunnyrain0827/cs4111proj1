@@ -107,12 +107,18 @@ def index():
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
 
-  cursor2 = g.conn.execute("SELECT piece_id FROM piece")
+  cursor2 = g.conn.execute("SELECT * FROM piece")
   pids2 = []
   for result in cursor2:
     pids2.append(result['piece_id'])
   cursor2.close()
+  
 
+  cursor = g.conn.execute("SELECT * FROM studies")
+  schools = []
+  for result in cursor:
+    schools.append(result['school'])
+  cursor.close()
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
   # pass data to a template and dynamically generate HTML based on the data
@@ -146,7 +152,7 @@ def index():
   # render_template looks in the templates/ folder for files.
   # for example, the below file reads template/index.html
   #
-  return render_template("index.html")
+  return render_template("index.html", pids2=pids2, schools=schools)
 
 #
 # This is an example of a different path.  You can see it at:
@@ -163,19 +169,36 @@ def another():
 @app.route('/piece', methods = ['POST'])
 def piece():
   pid = request.form['pids']
-  cursor2 = g.conn.execute('SELECT * FROM piece(piece_id, date, repnum, rest) WHERE piece_ID = %d', pid)
-  pids2 = []
+  cursor2 = g.conn.execute("SELECT * FROM piece WHERE piece_id = '{0}'".format(pid))
+  pids3 = []
   dates = []
   repnums = []
   rest = []
-  for r in cursor2:
-    pids2.append(result['piece_id'])
+  for result in cursor2:
+    pids3.append(result['piece_id'])
     dates.append(result['date'])
-    repnums.append(result['repnum'])
+    repnums.append(result['rep_num'])
     rest.append(result['rest'])
   cursor2.close()
-  context = dict(data = (pids2, dates, rempnums, rest))
-  return render_template("selects.html", **context)
+  context = dict(data = (pids3, dates, repnums, rest))
+  return render_template("piece.html", **context)
+
+@app.route('/teammmembers', methods = ['POST'])
+def teammembers():
+  school = request.form['school']
+  cursor = g.conn.execute("SELECT * FROM studies WHERE uni = '{0}'".format(school))
+  unis = []
+  gpas = []
+  majors = []
+  schools = []
+  for result in cursor:
+    unis.append(result['uni'])
+    gpas.append(result['gpa'])
+    majors.append(result['maj_name'])
+    schools.append(result['school'])
+  cursor.close()
+  context = dict(data = (unis, schools, majors, gpas))
+  return render_template("teammembers.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
