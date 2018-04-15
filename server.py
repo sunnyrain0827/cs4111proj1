@@ -54,7 +54,6 @@ def teardown_request(exception):
   except Exception as e:
     pass
 
-
 @app.route('/')
 def index():
   cursor2 = g.conn.execute("SELECT * FROM piece")
@@ -256,7 +255,7 @@ def rowerinfo():
 @app.route('/rower_by_hsteam', methods = ['POST'])
 def rower_by_hsteam():
   hsteam2 = request.form['hsteams']
-  if rowers == "all":
+  if hsteam2 == "all":
     cursor= g.conn.execute("SELECT * FROM rower_info ORDER BY row_name")
   else:
     cursor = g.conn.execute("SELECT * FROM rower_info WHERE team_name = '{0}'".format(hsteam2))
@@ -286,8 +285,7 @@ def rower_by_hsteam():
     schools.append(result['school'])
     ranks.append(result['rank'])
   cursor.close()
-  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecruit, collegeteams, gpas, major
-s, schools, ranks))
+  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecruit, collegeteams, gpas, majors, schools, ranks))
   return render_template("rower_by_hsteam.html", **context)
 
 # Example of adding new data to the database
