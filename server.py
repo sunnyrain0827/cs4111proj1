@@ -181,6 +181,36 @@ def winners():
   context = dict(data = (pids, lengths, reps, rest, splits, dates, rowers, grads, isrecruit))
   return render_template("winners.html", **context)
 
+@app.route('/pieces_by_rower', methods = ['POST'])
+def pieces_by_rower():
+  rowers = request.form['pcsbyrower']
+  if rowers == "all":
+    cursor= g.conn.execute("SELECT * FROM pcs_by_rower ORDER BY row_name")
+  else:
+    cursor = g.conn.execute("SELECT * FROM pcs_by_rower WHERE row_name = '{0}' ORDER BY row_name".format(rowers))
+  row_names = []
+  unis = []
+  grads = []
+  pids = []
+  lengths = []
+  reps = []
+  rests = []
+  splits = []
+  dates = []
+  for result in cursor:
+    pids.append(result['piece_id'])
+    lengths.append(result['length'])
+    reps.append(result['rep_num'])
+    rests.append(result['rest'])
+    splits.append(result['split_speed'])
+    dates.append(result['date'])
+    row_names.append(result['row_name'])
+    grads.append(result['year'])
+    unis.append(result['uni'])
+  cursor.close()
+  context = dict(data = (row_names, unis, grads, pids, lengths, reps, rests, splits, dates))
+  return render_template("pieces_by_rower.html", **context)
+
 @app.route('/rowerinfo', methods = ['POST'])
 def rowerinfo():
   rowers = request.form['rowers']

@@ -1,0 +1,85 @@
+<html>
+  <style>
+    body{
+      font-size: 15pt;
+      font-family: Times;
+    }
+    th{
+      text-align: left;
+      display: block;
+    }
+    td{
+      display: block;
+    }
+    tr{
+      display: block;
+      float: left;
+    }
+  </style>
+
+
+<body>
+  <h1>Pieces By Rower</h1>
+  <div>{{data}}</div>
+
+  <table border="1">
+    <tr>
+      <th>Rower:</th>
+      {% for n in data[0] %}
+      <th>{{n}}</th>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>UNI:</td>
+      {% for n in data[1] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Grad Year:</td>
+      {% for n in data[2] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Piece ID:</td>
+      {% for n in data[3] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Length:</td>
+      {% for n in data[4] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Reps:</td>
+      {% for n in data[5] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Rest:</td>
+      {% for n in data[6] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Split:</td>
+      {% for n in data[7] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Date:</td>
+      {% for n in data[8] %}
+      <td>{{n}}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+<p><a href="/">Go back to the homepage</a></p>
+
+</body>
+</html>
