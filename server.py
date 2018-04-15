@@ -103,6 +103,28 @@ def piece():
   context = dict(data = (pids3, dates, lengths, repnums, rest))
   return render_template("piece.html", **context)
 
+@app.route('/piece_ids', methods = ['POST'])
+def piece_ids():
+  pid = request.form['pids']
+  if date == "all":
+    cursor2 = g.conn.execute("SELECT * FROM all_pieces ORDER BY piece_id")
+  else:
+    cursor2 = g.conn.execute("SELECT * FROM all_pieces WHERE piece_id = '{0}' ORDER BY piece_id".format(pid))
+  pids3 = []
+  dates = []
+  repnums = []
+  rest = []
+  lengths = []
+  for result in cursor2:
+    pids3.append(result['piece_id'])
+    dates.append(result['date'])
+    repnums.append(result['rep_num'])
+    rest.append(result['rest'])
+    lengths.append(result['length'])
+  cursor2.close()
+  context = dict(data = (pids3, dates, lengths, repnums, rest))
+  return render_template("piece_ids.html", **context)
+
 @app.route('/teammembers', methods = ['POST'])
 def teammembers():
   school = request.form['school']
