@@ -24,6 +24,18 @@
 	<button type="submit">See Piece!</button>
   </form>
 
+  <form name = formy  method="POST" action="/piece_ids">
+        <p>See Piece corresponding to Piece ID:</p>
+        <select name = "pids">
+                {% for n in pids2 %}
+                        <option value="{{n}}">{{n}}</option>
+                {% endfor %}
+                <option value="all">All pieces</option>
+        </select>
+
+        <button type="submit">See Piece!</button>
+  </form>
+
   <form name = formy2  method="POST" action="/teammembers">
         <p>See Academic Team Data by School:</p>
         <select name = "school">

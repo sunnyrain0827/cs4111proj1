@@ -75,7 +75,13 @@ def index():
     rowers.append(result['row_name'])
   cursor.close()
 
-  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers)
+  cursor = g.conn.execute("SELECT piece_id FROM piece")
+  pids2 = []
+  for result in cursor:
+    pids2.append(result['piece_id'])
+  cursor.close()
+
+  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers, pids2=pids2)
 
 @app.route('/another')
 def another():
