@@ -80,8 +80,14 @@ def index():
   for result in cursor:
     pids2.append(result['piece_id'])
   cursor.close()
+ 
+  cursor = g.conn.execute("SELECT team_name FROM rower_info ORDER BY team_name")
+  hsteams = []
+  for result in cursor:
+    hsteams.append(result['team_name'])
+  cursor.close()
 
-  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers, pids2=pids2)
+  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
 
 @app.route('/another')
 def another():
@@ -246,6 +252,43 @@ def rowerinfo():
   cursor.close()
   context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecruit, collegeteams, gpas, majors, schools, ranks))
   return render_template("rowerinfo.html", **context)
+
+@app.route('/rower_by_hsteam', methods = ['POST'])
+def rower_by_hsteam():
+  hsteam2 = request.form['hsteams']
+  if rowers == "all":
+    cursor= g.conn.execute("SELECT * FROM rower_info ORDER BY row_name")
+  else:
+    cursor = g.conn.execute("SELECT * FROM rower_info WHERE team_name = '{0}'".format(hsteam2))
+  names = []
+  grads = []
+  zips = []
+  unis = []
+  hsteams = []
+  isclub = []
+  isrecruit = []
+  collegeteams = []
+  gpas = []
+  majors = []
+  schools = []
+  ranks = []
+  for result in cursor:
+    names.append(result['row_name'])
+    grads.append(result['year'])
+    zips.append(result['zip_code'])
+    unis.append(result['uni'])
+    hsteams.append(result['team_name'])
+    isclub.append(result['is_club'])
+    isrecruit.append(result['is_recruit'])
+    collegeteams.append(result['class'])
+    gpas.append(result['gpa'])
+    majors.append(result['maj_name'])
+    schools.append(result['school'])
+    ranks.append(result['rank'])
+  cursor.close()
+  context = dict(data = (names, grads, unis, zips, hsteams, isclub, isrecruit, collegeteams, gpas, major
+s, schools, ranks))
+  return render_template("rower_by_hsteam.html", **context)
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
