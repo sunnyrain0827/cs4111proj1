@@ -185,9 +185,9 @@ def winners():
 def pieces_by_rower():
   rowers = request.form['pcsbyrower']
   if rowers == "all":
-    cursor= g.conn.execute("SELECT * FROM pcs_by_rower ORDER BY row_name")
+    cursor= g.conn.execute("SELECT * FROM pcs_by_rowers ORDER BY row_name")
   else:
-    cursor = g.conn.execute("SELECT * FROM pcs_by_rower WHERE row_name = '{0}' ORDER BY row_name".format(rowers))
+    cursor = g.conn.execute("SELECT * FROM pcs_by_rowers WHERE row_name = '{0}' ORDER BY row_name".format(rowers))
   row_names = []
   unis = []
   grads = []
