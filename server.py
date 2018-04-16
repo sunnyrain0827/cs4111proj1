@@ -22,7 +22,7 @@ from flask_table import Table, Col
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-
+print "Hello world!"
 # XXX: The URI should be in the format of: 
 #
 #     postgresql://USER:PASSWORD@35.227.79.146/proj1part2
@@ -86,13 +86,13 @@ def index():
     hsteams.append(result['team_name'])
   cursor.close()
   
-  cursor = g.conn.execute("SELECT concat FROM master_pieces ORDER BY concat")
+  cursor = g.conn.execute("SELECT DISTINCT concat FROM master_pieces") 
   piecenames = []
   for result in cursor:
     piecenames.append(result['concat'])
   cursor.close()
 
-  return render_template("index.html", piecenames = piecenames, dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
+  return render_template("index.html", piecenames=piecenames, dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
 
 @app.route('/another')
 def another():
@@ -303,40 +303,42 @@ def add():
 
 @app.route('/addpiece', methods = ['POST'])
 def addpiece():
-  date = request.form['date']
-  piece = request.form['pieces'] 
+  print "working at first..."
+  date = "15/04/2018"
+  piece = request.form['pieces']
+  print "form requests working..."
   cursor = g.conn.execute("SELECT max(p.piece_id) FROM piece p")
+  print "first select working..."
   id_to_insert = ((cursor.fetchone()[0]) + 1)
-  cursor.close()
+  print "fetchone bullshit working..."
+  cursor.close()  
 
   cursor = g.conn.execute("SELECT DISTINCT piece_id FROM master_pieces WHERE concat = '{0}'".format(piece))
-  pieceid = []
-  for result in cursor:
-    pieceid.append(result['piece_id'])
+  pieceid = cursor.fetchone()[0]
   cursor.close()
   
   piecetype = ""
-  cursor = g.conn.execute("SELECT cat FROM master_pieces WHERE piece_id = '{0}'".format(pieceid[0]))
-  piecetype = cusor.fetchone()[0]
+  cursor = g.conn.execute("SELECT cat FROM master_pieces WHERE piece_id = '{0}'".format(pieceid))
+  piecetype = cursor.fetchone()[0]
   cursor.close()
  
   duration = []
   repnums = []
   rest = []
   distance = []
-  cursor = g.conn.execute("SELECT * FROM master_pieces WHERE piece_id = '{0}'".format(pieceid[0])
+  cursor = g.conn.execute("SELECT * FROM master_pieces WHERE piece_id = '{0}'".format(pieceid))
   for result in cursor:
     duration.append(result['duration'])
-    repnums.append(result['repnums'])
+    repnums.append(result['rep_num'])
     rest.append(result['rest'])
     distance.append(result['distance'])
   if piecetype == "time":
     g.conn.execute("INSERT INTO time_piece(duration, piece_id) VALUES('{0}', '{1}')".format(duration[0], id_to_insert))
-    g.conn.execute("INSERT INTO piece(piece_id, rest, repnum, date) VALUES('{0}', '{1}', '{2}', '{3}')".format(id_to_insert, rest[0], repnums[0], date))
+    g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, rest[0], repnums[0], date))
   else:
      g.conn.execute("INSERT INTO dist_piece(distance, piece_id) VALUES('{0}', '{1}')".format(distance[0], id_to_insert))
-    g.conn.execute("INSERT INTO piece(piece_id, rest, repnum, date) VALUES('{0}', '{1}', '{2}', '{3}')".format(id_to_insert, rest[0], repnums[0], date))
-  return redirect("/")
+     g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, rest[0], repnums[0], date))
+  return redirect('/')
 
 @app.route('/login')
 def login():
