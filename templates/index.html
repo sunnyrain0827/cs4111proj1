@@ -112,15 +112,16 @@
    
   <form method="POST" action="/addpiece">
     <h1> Add a piece to the database here </h1>
-    <p>Add a date and a piece for the database, piece ID will be assigned </p>
+    <p>Add a date and a piece for the database, piece ID will be assigned. Dates roll over (e.g. 30/2/2001 will be entered as 2/3/2001) </p>
     <input type="number" name="datedays" min="1" max="31">
-    <input type="number" name="datemonths" min="1" max="31">
+    <input type="number" name="datemonths" min="1" max="12">
     <input type="number" name="dateyears" min="2000" max="2018">
     <select name = "pieces">
       {% for n in piecenames %}
         <option value="{{n}}">{{n}}</option>
       {% endfor %}
     </select>
+    <p> DD    /    MM    /    YYYY</p>
     <button type="submit">Add piece!</button>
   </form>
 

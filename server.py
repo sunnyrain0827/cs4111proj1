@@ -305,7 +305,7 @@ def add():
 def addpiece():
   datedays = request.form['datedays']
   datemonths = request.form['datemonths']
-  dateyears = request.form['dateyears']
+  dateyears = request.form['dateyears']     
   date = datedays + "\\" + datemonths + "\\" + dateyears
   piece = request.form['pieces']
   cursor = g.conn.execute("SELECT max(p.piece_id) FROM piece p")
