@@ -94,6 +94,10 @@ def index():
 
   return render_template("index.html", piecenames=piecenames, dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
 
+@app.route('/error', methods = ['GET'])
+def error():
+  return render_template("error.html")
+
 @app.route('/another')
 def another():
   return render_template("another.html")
@@ -307,6 +311,9 @@ def addpiece():
   datemonths = request.form['datemonths']
   dateyears = request.form['dateyears']     
   date = datedays + "\\" + datemonths + "\\" + dateyears
+  if len(date) < 8:
+    return render_template("error.html")
+
   piece = request.form['pieces']
   cursor = g.conn.execute("SELECT max(p.piece_id) FROM piece p")
   id_to_insert = ((cursor.fetchone()[0]) + 1)
@@ -364,8 +371,8 @@ def addworkout():
   cursor.close()
   
   cursor = g.conn.execute("SELECT * FROM rowed WHERE piece_id = '{0}' AND uni = '{1}'".format(pid, uni))
-  if cursor.fetchonne()[0] != None:
-    return redirect("error.html")
+  if cursor.rowcount != 0:
+    return render_template("error.html")
   else:
     g.conn.execute("INSERT INTO rowed(split_speed, piece_id, uni) VALUES('{0}', '{1}', '{2}')".format(split, pid, uni))
   cursor.close()
