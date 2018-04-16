@@ -1,0 +1,28 @@
+<html>
+  <style>
+    body{
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+ 
+
+<body>
+  <h1> Add a piece! </h1>
+
+
+  <p><a href="/">Go back to the homepage</a></p>
+
+  <form name = formy method="POST" action="/addpiece2">
+    <p> Add a date and a piece for the database, piece ID will be assigned </p>
+    <input id="date" type="date">
+    <select name = "pieces">
+      {% for n in piecenames %}
+        <option value="{{n}}">{{n}}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Add piece!</button>
+  </form>
+  
+</body>
+</html>
