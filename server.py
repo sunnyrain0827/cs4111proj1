@@ -295,6 +295,9 @@ def add():
   g.conn.execute('INSERT INTO major(school, maj_name) VALUES (\'CC\', %s)', name)
   return redirect('/')
 
+@app.route('/addpiece/', methods = ['POST', 'GET'])
+def addpiece():
+  return render_template("addpiece.html")
 
 @app.route('/login')
 def login():
