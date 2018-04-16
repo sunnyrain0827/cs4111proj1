@@ -332,13 +332,18 @@ def addpiece():
     repnums.append(result['rep_num'])
     rest.append(result['rest'])
     distance.append(result['distance'])
+  
+  resty = rest[0]
+  if repnums[0] == 1:
+    resty = 0 
+
   if piecetype == "time":
-    g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, rest[0], repnums[0], date))
+    g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, resty, repnums[0], date))
     g.conn.execute("INSERT INTO time_piece(duration, piece_id) VALUES('{0}', '{1}')".format(duration[0],
  id_to_insert))
   else:
-     g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, rest[0], repnums[0], date))
-    g.conn.execute("INSERT INTO dist_piece(distance, piece_id) VALUES('{0}', '{1}')".format(distance[0], id_to_insert))
+     g.conn.execute("INSERT INTO piece(piece_id, rest, rep_num, date) VALUES('{0}', '{1}', '{2}', to_date('{3}', 'dd/mm/yyyy'))".format(id_to_insert, resty, repnums[0], date))
+     g.conn.execute("INSERT INTO dist_piece(distance, piece_id) VALUES('{0}', '{1}')".format(distance[0], id_to_insert))
   return redirect('/')
 
 @app.route('/login')
