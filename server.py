@@ -300,7 +300,7 @@ def addpiece():
   cursor = g.conn.execute("SELECT concat FROM master_pieces ORDER BY concat")
   piecenames = []
   for result in cursor:
-    concats.append(result['concat'])
+    piecenames.append(result['concat'])
   cursor.close()
   date = request.form['date']
   piece = request.form['pieces']
