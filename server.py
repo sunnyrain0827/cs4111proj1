@@ -303,14 +303,13 @@ def add():
 
 @app.route('/addpiece', methods = ['POST'])
 def addpiece():
-  print "working at first..."
-  date = "15/04/2018"
+  datedays = request.form['datedays']
+  datemonths = request.form['datemonths']
+  dateyears = request.form['dateyears']
+  date = datedays + "\\" + datemonths + "\\" + dateyears
   piece = request.form['pieces']
-  print "form requests working..."
   cursor = g.conn.execute("SELECT max(p.piece_id) FROM piece p")
-  print "first select working..."
   id_to_insert = ((cursor.fetchone()[0]) + 1)
-  print "fetchone bullshit working..."
   cursor.close()  
 
   cursor = g.conn.execute("SELECT DISTINCT piece_id FROM master_pieces WHERE concat = '{0}'".format(piece))
