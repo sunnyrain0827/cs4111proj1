@@ -345,6 +345,32 @@ def addpiece():
      g.conn.execute("INSERT INTO dist_piece(distance, piece_id) VALUES('{0}', '{1}')".format(distance[0], id_to_insert))
   return redirect('/')
 
+@app.route("/addworkout", methods=['POST'])
+def addworkout():
+  splitmins = request.form['splitmins']
+  splitsecs = request.form['splitsecs']
+  pid = request.form['pid']
+  rower = request.form['rowers']
+  split = ""  
+  uni = ""  
+
+  if splitsecs < 10:
+     split = "00:0" + splitmins + ":" + "0" + splitsecs
+  else:
+    split = "00:0" + splitmins + ":" + splitsecs
+
+  cursor = g.conn.execute("SELECT uni FROM rower WHERE row_name = '{0}'".format(rower))
+  uni = cursor.fetchone()[0]
+  cursor.close()
+  
+  cursor = g.conn.execute("SELECT * FROM rowed WHERE piece_id = '{0}' AND uni = '{1}'".format(pid, uni))
+  if cursor.fetchonne()[0] != None:
+    return redirect("error.html")
+  else:
+    g.conn.execute("INSERT INTO rowed(split_speed, piece_id, uni) VALUES('{0}', '{1}', '{2}')".format(split, pid, uni))
+  cursor.close()
+  return redirect('/')
+
 @app.route('/login')
 def login():
     abort(401)
