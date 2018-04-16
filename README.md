@@ -61,3 +61,4 @@ The ability to add pieces to the database is also interesting, as we had to cons
 As a stylistic touch, we decided to keep the Another file, as well creating 90’s-esque web design.# cs4111proj1
 Project 1 Web Front End Option
 
+bootstrap code from internet tutorials and help from Jerome Kafrouni
