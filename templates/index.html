@@ -111,7 +111,15 @@
   </form>  
    
   <form method="POST" action="/addpiece">
-    <button type="submit">Add a Piece to the Database</button>
+    <h1> Add a piece to the database here </h1>
+    <p>Add a date and a piece for the database, piece ID will be assigned </p>
+    <input id="date" type="date">
+    <select name = "pieces">
+      {% for n in piecenames %}
+        <option value="{{n}}">{{n}}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Add piece!</button>
   </form> 
 
 </body>

@@ -85,8 +85,14 @@ def index():
   for result in cursor:
     hsteams.append(result['team_name'])
   cursor.close()
+  
+  cursor = g.conn.execute("SELECT concat FROM master_pieces ORDER BY concat")
+  piecenames = []
+  for result in cursor:
+    piecenames.append(result['concat'])
+  cursor.close()
 
-  return render_template("index.html", dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
+  return render_template("index.html", piecenames = piecenames, dates2=dates2, schools=schools, rowers=rowers, pids2=pids2, hsteams=hsteams)
 
 @app.route('/another')
 def another():
@@ -295,16 +301,42 @@ def add():
   g.conn.execute('INSERT INTO major(school, maj_name) VALUES (\'CC\', %s)', name)
   return redirect('/')
 
-@app.route('/addpiece', methods = ['POST', 'GET'])
+@app.route('/addpiece', methods = ['POST'])
 def addpiece():
-  cursor = g.conn.execute("SELECT concat FROM master_pieces ORDER BY concat")
-  piecenames = []
-  for result in cursor:
-    piecenames.append(result['concat'])
-  cursor.close()
   date = request.form['date']
-  piece = request.form['pieces']
-  return render_template("addpiece.html", piecenames=piecenames)
+  piece = request.form['pieces'] 
+  cursor = g.conn.execute("SELECT max(p.piece_id) FROM piece p")
+  id_to_insert = ((cursor.fetchone()[0]) + 1)
+  cursor.close()
+
+  cursor = g.conn.execute("SELECT DISTINCT piece_id FROM master_pieces WHERE concat = '{0}'".format(piece))
+  pieceid = []
+  for result in cursor:
+    pieceid.append(result['piece_id'])
+  cursor.close()
+  
+  piecetype = ""
+  cursor = g.conn.execute("SELECT cat FROM master_pieces WHERE piece_id = '{0}'".format(pieceid[0]))
+  piecetype = cusor.fetchone()[0]
+  cursor.close()
+ 
+  duration = []
+  repnums = []
+  rest = []
+  distance = []
+  cursor = g.conn.execute("SELECT * FROM master_pieces WHERE piece_id = '{0}'".format(pieceid[0])
+  for result in cursor:
+    duration.append(result['duration'])
+    repnums.append(result['repnums'])
+    rest.append(result['rest'])
+    distance.append(result['distance'])
+  if piecetype == "time":
+    g.conn.execute("INSERT INTO time_piece(duration, piece_id) VALUES('{0}', '{1}')".format(duration[0], id_to_insert))
+    g.conn.execute("INSERT INTO piece(piece_id, rest, repnum, date) VALUES('{0}', '{1}', '{2}', '{3}')".format(id_to_insert, rest[0], repnums[0], date))
+  else:
+     g.conn.execute("INSERT INTO dist_piece(distance, piece_id) VALUES('{0}', '{1}')".format(distance[0], id_to_insert))
+    g.conn.execute("INSERT INTO piece(piece_id, rest, repnum, date) VALUES('{0}', '{1}', '{2}', '{3}')".format(id_to_insert, rest[0], repnums[0], date))
+  return redirect("/")
 
 @app.route('/login')
 def login():
