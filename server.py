@@ -295,9 +295,16 @@ def add():
   g.conn.execute('INSERT INTO major(school, maj_name) VALUES (\'CC\', %s)', name)
   return redirect('/')
 
-@app.route('/addpiece/', methods = ['POST', 'GET'])
+@app.route('/addpiece', methods = ['POST', 'GET'])
 def addpiece():
-  return render_template("addpiece.html")
+  cursor = g.conn.execute("SELECT concat FROM master_pieces ORDER BY concat")
+  piecenames = []
+  for result in cursor:
+    concats.append(result['concat'])
+  cursor.close()
+  date = request.form['date']
+  piece = request.form['pieces']
+  return render_template("addpiece.html", piecenames=piecenames)
 
 @app.route('/login')
 def login():
