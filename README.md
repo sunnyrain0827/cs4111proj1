@@ -1,4 +1,4 @@
-kdf2118- Kyle Fram
+kdf2118- Kyle Framm
 tio2001- Tristan Orlofski
 
 
@@ -61,4 +61,6 @@ The ability to add pieces to the database is also interesting, as we had to cons
 As a stylistic touch, we decided to keep the Another file, as well creating 90’s-esque web design.# cs4111proj1
 Project 1 Web Front End Option
 
-bootstrap code from internet tutorials and help from Jerome Kafrouni
+Note- the website is sometimes slow in screen mode, when multiple people are accessing it. This is not due to our code running slowly
+
+Some inspiration from internet tutorials and help from Jerome Kafrouni
