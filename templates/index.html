@@ -113,13 +113,33 @@
   <form method="POST" action="/addpiece">
     <h1> Add a piece to the database here </h1>
     <p>Add a date and a piece for the database, piece ID will be assigned </p>
-    <input id="date" type="date">
+    <input type="number" name="datedays" min="1" max="31">
+    <input type="number" name="datemonths" min="1" max="31">
+    <input type="number" name="dateyears" min="2000" max="2018">
     <select name = "pieces">
       {% for n in piecenames %}
         <option value="{{n}}">{{n}}</option>
       {% endfor %}
     </select>
     <button type="submit">Add piece!</button>
+  </form>
+
+  <form method="POST" action="/addworkout">
+    <h1> Add a Workout Here </h1>
+    <p>Select a Split, Piece ID, and Rower </p>
+    <input type="number" name="splitmins" min="1" max="3">
+    <input type="number" name="splitsecs" min="0" max="59">
+    <select name = "pieces">
+      {% for n in piecenames %}
+        <option value="{{n}}">{{n}}</option>
+      {% endfor %}
+    </select>
+    <select name = "rowers">
+      {% for n in rowers %}
+        <option value="{{n}}">{{n}}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Add Workout!</button>
   </form> 
 
 </body>
